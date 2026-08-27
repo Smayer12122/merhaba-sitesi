@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{genel.sayfaBasligi}}</title>
+<meta name="description" content="{{genel.aciklama}}">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0d1b30">
+
+<meta property="og:type" content="business.business">
+<meta property="og:title" content="{{genel.sayfaBasligi}}">
+<meta property="og:description" content="{{genel.aciklama}}">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:image" content="/gorsel/logo@2x.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2318d8ff'/%3E%3Cstop offset='.55' stop-color='%23a860f0'/%3E%3Cstop offset='1' stop-color='%23f018f0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='23' font-family='system-ui,sans-serif' font-size='18' font-weight='800' fill='%23fff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/gorsel/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+  document.documentElement.classList.add('js');
+  try {
+    var t = localStorage.getItem('tema');
+    if (t) document.documentElement.dataset.tema = t;
+  } catch (e) {}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobilePhoneStore",
+  "name": "{{genel.unvan}}",
+  "telephone": "{{iletisim.merkezCepLink}}",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Gazi Osman Paşa Mah., Barbaros Cd. No: 4/B",
+    "addressLocality": "Çerkezköy",
+    "addressRegion": "Tekirdağ",
+    "postalCode": "59500",
+    "addressCountry": "TR"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 41.286586, "longitude": 27.998465 },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "09:00", "closes": "20:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "11:00", "closes": "19:00" }
+  ],
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "129" }
+}
+</script>
+</head>
+<body>
+
+<a class="atla" href="#icerik">İçeriğe atla</a>
+
+<svg class="ikon-deposu" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-telefon" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2Z"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.6-.1a13 13 0 0 1-5.7-5c-.4-.6-1-1.5-1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.5-.3.4c-.1.1-.2.3 0 .5.2.4.8 1.3 1.6 2 1 .8 1.8 1.1 2.1 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.3Z"/></symbol>
+  <symbol id="i-yildiz" viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8L12 2Z"/></symbol>
+  <symbol id="i-konum" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></symbol>
+  <symbol id="i-saat" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10.6V6h-2v7.4l5 3 1-1.7-4-2.1Z"/></symbol>
+  <symbol id="i-yeni" viewBox="0 0 24 24"><path d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm0 18H7V5h10v14Z"/></symbol>
+  <symbol id="i-yenile" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z"/></symbol>
+  <symbol id="i-takas" viewBox="0 0 24 24"><path d="M7 4 3 8l4 4V9h11V7H7V4Zm10 16 4-4-4-4v3H6v2h11v3Z"/></symbol>
+  <symbol id="i-tamir" viewBox="0 0 24 24"><path d="M21.7 18.4 13.3 10a5.5 5.5 0 0 0-6.8-6.9l3.3 3.3-2.6 2.6L3.9 5.7A5.5 5.5 0 0 0 10.8 13l8.4 8.4a1 1 0 0 0 1.4 0l1.1-1.1a1 1 0 0 0 0-1.9Z"/></symbol>
+  <symbol id="i-kargo" viewBox="0 0 24 24"><path d="M3 5h11v10H3V5Zm12 3h3.5l2.5 3v4h-2a2.5 2.5 0 0 1-5 0h-1V8ZM6 15.5a2.5 2.5 0 1 0 5 0 2.5 2.5 0 0 0-5 0Z"/></symbol>
+  <symbol id="i-kalkan" viewBox="0 0 24 24"><path d="M12 2 4 5.5v6c0 5 3.4 9.6 8 10.5 4.6-.9 8-5.5 8-10.5v-6L12 2Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></symbol>
+  <symbol id="i-hedef" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"/></symbol>
+  <symbol id="i-pusula" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.2 5.8-2.4 5.6-5.6 2.4 2.4-5.6 5.6-2.4ZM12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></symbol>
+  <symbol id="i-kart" viewBox="0 0 24 24"><path d="M21 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 4H3V7h18v2Zm0 8H3v-4h18v4Z"/></symbol>
+  <symbol id="i-kulaklik" viewBox="0 0 24 24"><path d="M12 3a8 8 0 0 0-8 8v6a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H6v-1a6 6 0 1 1 12 0v1h-2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1a3 3 0 0 0 3-3v-6a8 8 0 0 0-8-8Z"/></symbol>
+  <symbol id="i-tablet" viewBox="0 0 24 24"><path d="M19 2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Zm-7 19a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Zm7-4H5V5h14v12Z"/></symbol>
+  <symbol id="i-fatura" viewBox="0 0 24 24"><path d="M6 2h12a1 1 0 0 1 1 1v19l-3-2-3 2-3-2-3 2-3-2V3a1 1 0 0 1 1-1h1Zm2 5v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></symbol>
+</svg>
+
+<div class="fon" aria-hidden="true">
+  <div class="fon-mesh"></div>
+  <div class="fon-izgara"></div>
+  <div class="fon-grain"></div>
+</div>
+
+{{#duyuru.acik}}
+<div class="duyuru">
+  <div class="kap duyuru-ic">
+    <svg class="ikon" aria-hidden="true"><use href="#i-yildiz"/></svg>
+    <span>{{{duyuru.metin}}}</span>
+    {{#duyuru.link}}<a href="{{duyuru.link}}">Ayrıntı →</a>{{/duyuru.link}}
+  </div>
+</div>
+{{/duyuru.acik}}
+
+<header class="ust">
+  <div class="kap ust-ic">
+    <a class="marka" href="/" aria-label="{{genel.unvan}} — ana sayfa">
+      <img class="marka-logo"
+           src="/gorsel/logo.png"
+           srcset="/gorsel/logo.png 900w, /gorsel/logo@2x.png 1800w"
+           sizes="(max-width: 860px) 88px, 110px"
+           alt="{{genel.unvan}}"
+           width="900" height="475">
+    </a>
+
+    <nav class="gezinti" aria-label="Ana menü">
+      <a href="#hakkimizda">Hakkımızda</a>
+      <a href="#ilkelerimiz">Misyon &amp; Vizyon</a>
+      <a href="#hizmetler">Hizmetler</a>
+      <a href="#yorumlar">Yorumlar</a>
+      <a href="#galeri">Mağazalarımız</a>
+      <a href="#subeler">İletişim</a>
+    </nav>
+
+    <a class="ust-ara" href="tel:{{iletisim.merkezSabitLink}}">
+      <svg class="ikon" aria-hidden="true"><use href="#i-telefon"/></svg>
+      <span>{{iletisim.merkezSabit}}</span>
+    </a>
+
+    <button class="tema-dugme" type="button" data-tema-dugme aria-label="Temayı değiştir">
+      <span class="tema-ikon" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<main id="icerik">
+
+  <section class="kahraman">
+    <div class="kap kahraman-ic">
+      <a class="puan-rozet cam" href="{{kahraman.rozetLink}}" target="_blank" rel="noopener">
+        <span class="yildizlar" aria-hidden="true">
+          <svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg>
+        </span>
+        <span>{{{kahraman.rozet}}}</span>
+      </a>
+
+      <h1>{{kahraman.baslikUst}}<br><span class="vurgulu">{{kahraman.baslikVurgu}}</span></h1>
+
+      <p class="giris">{{{kahraman.giris}}}</p>
+
+      <div class="dugmeler">
+        <a class="dugme wa" href="https://wa.me/{{iletisim.merkezWa}}?text={{iletisim.waMesaj}}" target="_blank" rel="noopener">
+          <svg class="ikon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+          WhatsApp'tan yaz
+        </a>
+        <a class="dugme birincil" href="tel:{{iletisim.merkezCepLink}}">
+          <svg class="ikon" aria-hidden="true"><use href="#i-telefon"/></svg>
+          Hemen ara
+        </a>
+        <a class="dugme ikincil" href="#subeler">
+          <svg class="ikon" aria-hidden="true"><use href="#i-konum"/></svg>
+          Yol tarifi
+        </a>
+      </div>
+    </div>
+
+    <div class="serit">
+      <div class="kap serit-ic">
+        {{#serit}}<div class="serit-oge"><strong>{{deger}}</strong><span>{{etiket}}</span></div>
+        {{/serit}}
+      </div>
+    </div>
+  </section>
+
+  <section id="hakkimizda" class="bolum">
+    <div class="kap ikili">
+      <div class="ikili-metin">
+        <p class="etiket"><span class="sayi">01</span> Hakkımızda</p>
+        <h2>{{hakkimizda.baslik}}</h2>
+        <p>{{{hakkimizda.paragraf1}}}</p>
+        <p>{{{hakkimizda.paragraf2}}}</p>
+      </div>
+
+      <aside class="ikili-panel cam" data-goster>
+        <h3 class="panel-baslik">{{hakkimizda.degerlerBasligi}}</h3>
+        <ul class="deger-liste">
+          {{#hakkimizda.degerler}}<li>
+            <svg class="ikon" aria-hidden="true"><use href="#{{ikon}}"/></svg>
+            <div><strong>{{baslik}}</strong><span>{{metin}}</span></div>
+          </li>
+          {{/hakkimizda.degerler}}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section id="ilkelerimiz" class="bolum bolum-koyu">
+    <div class="kap">
+      <p class="etiket etiket-acik"><span class="sayi">02</span> İlkelerimiz</p>
+      <h2 class="orta-baslik">{{{ilkeler.baslik}}}</h2>
+
+      <div class="izgara izgara-2">
+        <article class="ilke" data-goster>
+          <span class="ilke-ikon"><svg class="ikon"><use href="#i-hedef"/></svg></span>
+          <h3>Misyonumuz</h3>
+          <p>{{{ilkeler.misyon}}}</p>
+        </article>
+
+        <article class="ilke" data-goster>
+          <span class="ilke-ikon"><svg class="ikon"><use href="#i-pusula"/></svg></span>
+          <h3>Vizyonumuz</h3>
+          <p>{{{ilkeler.vizyon}}}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="hizmetler" class="bolum">
+    <div class="kap">
+      <p class="etiket"><span class="sayi">03</span> Hizmetlerimiz</p>
+      <h2>{{hizmetler.baslik}}</h2>
+      <p class="bolum-giris giris-sikisik">{{{hizmetler.giris}}}</p>
+      <p class="tum-subeler">
+        <svg class="ikon" aria-hidden="true"><use href="#i-kalkan"/></svg>
+        {{{hizmetler.not}}}
+      </p>
+
+      <div class="izgara">
+        {{#hizmetler.liste}}<article class="kart" data-goster>
+          <span class="kart-ikon"><svg class="ikon"><use href="#{{ikon}}"/></svg></span>
+          <h3>{{{baslik}}}</h3>
+          <p>{{{metin}}}</p>
+        </article>
+        {{/hizmetler.liste}}
+      </div>
+    </div>
+  </section>
+
+  <section id="yorumlar" class="bolum bolum-alt">
+    <div class="kap">
+      <p class="etiket"><span class="sayi">04</span> Referanslarımız</p>
+      <div class="yorum-ust">
+        <h2>{{yorumlar.baslik}}</h2>
+        <div class="puan-kutu cam">
+          <strong>{{yorumlar.puan}}</strong>
+          <span class="yildizlar" aria-hidden="true">
+            <svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg>
+          </span>
+          <small>{{yorumlar.adet}}</small>
+          <small class="puan-dagilim">{{yorumlar.dagilim}}</small>
+        </div>
+      </div>
+
+      <div class="izgara izgara-yorum">
+        {{#yorumlar.liste}}<figure class="yorum" data-goster>
+          <span class="yildizlar" aria-label="5 üzerinden 5">
+            <svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg>
+          </span>
+          <blockquote>{{metin}}</blockquote>
+          <figcaption>
+            <span class="avatar" aria-hidden="true">{{harf}}</span>
+            <span class="yorum-kisi">{{isim}} <small>{{sube}} · Google</small></span>
+          </figcaption>
+        </figure>
+        {{/yorumlar.liste}}
+      </div>
+
+      <p class="alt-not">
+        Google'daki yorumların tamamı:
+        <a href="{{yorumlar.merkezLink}}" target="_blank" rel="noopener">{{yorumlar.merkezEtiket}}</a>
+        &nbsp;·&nbsp;
+        <a href="{{yorumlar.caddeLink}}" target="_blank" rel="noopener">{{yorumlar.caddeEtiket}}</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="galeri" class="bolum">
+    <div class="kap">
+      <p class="etiket"><span class="sayi">05</span> Mağazalarımız</p>
+      <h2>{{galeri.baslik}}</h2>
+      <p class="bolum-giris">{{{galeri.giris}}}</p>
+
+      {{#galeri.gruplar}}
+      <h3 class="galeri-baslik">{{ad}} <span>{{etiket}}</span></h3>
+      <div class="galeri{{#uclu}} galeri-uclu{{/uclu}}">
+        {{#fotograflar}}<figure class="galeri-oge{{#dikey}} galeri-dikey{{/dikey}}{{^dikey}} galeri-yatay{{/dikey}}" data-goster>
+          <img src="{{dosya}}"{{#srcset}} srcset="{{srcset}}"{{/srcset}}{{#sizes}} sizes="{{sizes}}"{{/sizes}}
+               alt="{{alt}}"{{#en}} width="{{en}}"{{/en}}{{#boy}} height="{{boy}}"{{/boy}} loading="lazy">
+          <figcaption>{{yazi}}</figcaption>
+        </figure>
+        {{/fotograflar}}
+      </div>
+      {{/galeri.gruplar}}
+    </div>
+  </section>
+
+  <section id="subeler" class="bolum bolum-alt">
+    <div class="kap">
+      <p class="etiket"><span class="sayi">06</span> İletişim</p>
+      <h2>{{subelerBolumu.baslik}}</h2>
+      <p class="bolum-giris">{{{subelerBolumu.giris}}}</p>
+
+      <div class="izgara izgara-2">
+        {{#subelerBolumu.liste}}<article class="sube" data-goster>
+          <h3>{{ad}} <span class="sube-etiket">{{etiket}}</span></h3>
+          <ul class="sube-bilgi">
+            <li>
+              <svg class="ikon" aria-hidden="true"><use href="#i-konum"/></svg>
+              <span>{{{adres}}}</span>
+            </li>
+            <li>
+              <svg class="ikon" aria-hidden="true"><use href="#i-saat"/></svg>
+              <span>{{{saatler.kisa1}}}<br>{{{saatler.kisa2}}}</span>
+            </li>
+            <li>
+              <svg class="ikon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              <span><a href="tel:{{cepLink}}">{{cep}}</a> <small>cep &amp; WhatsApp</small></span>
+            </li>
+            {{#sabit}}<li>
+              <svg class="ikon" aria-hidden="true"><use href="#i-telefon"/></svg>
+              <span><a href="tel:{{sabitLink}}">{{sabit}}</a> <small>sabit hat</small></span>
+            </li>
+            {{/sabit}}
+          </ul>
+          <div class="sube-dugmeler">
+            <a class="dugme wa kucuk" href="https://wa.me/{{waLink}}?text={{iletisim.waMesaj}}%20{{waNot}}" target="_blank" rel="noopener">
+              <svg class="ikon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              WhatsApp
+            </a>
+            <a class="dugme birincil kucuk" href="tel:{{cepLink}}">Ara</a>
+            <a class="dugme ikincil kucuk" href="https://www.google.com/maps/dir/?api=1&destination={{koordinat}}" target="_blank" rel="noopener">Yol tarifi</a>
+          </div>
+        </article>
+        {{/subelerBolumu.liste}}
+      </div>
+
+      <div class="harita" data-goster>
+        <iframe
+          src="https://maps.google.com/maps?q={{subelerBolumu.haritaKoordinat}}&hl=tr&z=16&output=embed"
+          title="{{genel.unvan}} şube haritası"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="cagri">
+    <div class="kap dar orta">
+      <h2>{{cagri.baslik}}</h2>
+      <p class="bolum-giris">{{{cagri.giris}}}</p>
+      <div class="dugmeler orta-dugmeler">
+        {{#subelerBolumu.liste}}<a class="dugme wa" href="https://wa.me/{{waLink}}?text={{iletisim.waMesaj}}%20{{waNot}}" target="_blank" rel="noopener">
+          <svg class="ikon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+          {{ad}}: {{cep}}
+        </a>
+        {{/subelerBolumu.liste}}
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="dip">
+  <div class="kap dip-izgara">
+    <div class="dip-marka">
+      <img class="dip-logo"
+           src="/gorsel/logo.png"
+           srcset="/gorsel/logo.png 900w, /gorsel/logo@2x.png 1800w"
+           sizes="140px"
+           alt="{{genel.unvan}}"
+           width="900" height="475"
+           loading="lazy">
+      <p>{{{dip.tanim}}}</p>
+    </div>
+
+    <div class="dip-sutun">
+      <h4>Kurumsal</h4>
+      <a href="#hakkimizda">Hakkımızda</a>
+      <a href="#ilkelerimiz">Misyon &amp; Vizyon</a>
+      <a href="#hizmetler">Hizmetlerimiz</a>
+      <a href="#yorumlar">Referanslarımız</a>
+      <a href="#galeri">Mağazalarımız</a>
+    </div>
+
+    <div class="dip-sutun">
+      <h4>Şubelerimiz</h4>
+      <a class="dip-ortak" href="tel:{{iletisim.merkezSabitLink}}">Sabit hat · {{iletisim.merkezSabit}}</a>
+      {{#subelerBolumu.liste}}<a href="tel:{{cepLink}}">{{ad}} · {{cep}}</a>
+      {{/subelerBolumu.liste}}
+      <span>{{saatler.dipSatir1}}</span>
+      <span>{{saatler.dipSatir2}}</span>
+    </div>
+  </div>
+
+  <div class="kap dip-alt">
+    <p>© <span data-yil>2026</span> {{genel.unvan}} · {{genel.sehir}}</p>
+    <p>Tüm hakları saklıdır.</p>
+  </div>
+</footer>
+
+<nav class="alt-bar" aria-label="Hızlı iletişim">
+  <a href="tel:{{iletisim.merkezCepLink}}">
+    <svg class="ikon" aria-hidden="true"><use href="#i-telefon"/></svg>
+    Ara
+  </a>
+  <a class="alt-wa" href="https://wa.me/{{iletisim.merkezWa}}?text={{iletisim.waMesaj}}" target="_blank" rel="noopener">
+    <svg class="ikon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+    WhatsApp
+  </a>
+</nav>
+
+<script src="/script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "hizmetler": {
+    "baslik": "Telefonla ilgili her iş",
+    "giris": "Almak, satmak, tamir ettirmek ya da eski cihazınızı değerlendirmek için şubelerimize bekleriz; cihazı yerinde görür, size en uygun seçeneği birlikte belirleriz. Uğrama imkânınız yoksa telefonla arayabilir veya WhatsApp'tan yazabilirsiniz.",
+    "not": "Bu hizmetlerin tamamı <strong>her iki şubemizde de</strong> verilmektedir.",
+    "liste": [
+      {
+        "ikon": "i-yeni",
+        "baslik": "Sıfır telefon satışı",
+        "metin": "Kutusu açılmamış, garantili cihazlar. Modelleri şubelerimizde yerinde görebilir, dilerseniz önce arayıp sorabilirsiniz."
+      },
+      {
+        "ikon": "i-yenile",
+        "baslik": "İkinci el alım satım",
+        "metin": "Temiz ve sorunsuz ikinci el cihazlar. Kullandığınız telefonu da değerinde alır, yeni cihazınızdan düşeriz."
+      },
+      {
+        "ikon": "i-tamir",
+        "baslik": "Teknik servis",
+        "metin": "Telefon ve tablet tamiri. Şarj, batarya, ekran ve diğer arızalar; önce bakar, gerçekten ne gerekiyorsa onu söyleriz."
+      },
+      {
+        "ikon": "i-kulaklik",
+        "baslik": "Aksesuar çeşitleri",
+        "metin": "Kılıf, ekran koruyucu, kulaklık, şarj aleti, powerbank ve hoparlör — her modele uygun geniş çeşit."
+      },
+      {
+        "ikon": "i-tablet",
+        "baslik": "Akıllı saat &amp; tablet",
+        "metin": "Akıllı saat modelleri ve tablet çeşitleri; yanlarına uygun aksesuarlarıyla birlikte."
+      },
+      {
+        "ikon": "i-kart",
+        "baslik": "12 aya varan taksit",
+        "metin": "Tüm kredi kartlarına 3-6-9-12 ay taksit. Ayrıca Fibabanka alışveriş kredisi ve elden taksit imkânı."
+      },
+      {
+        "ikon": "i-fatura",
+        "baslik": "Fatura ödeme noktası",
+        "metin": "Faturalarınızı şubelerimizde ödeyebilirsiniz. Telefon işiniz olmasa da uğrayabilirsiniz."
+      },
+      {
+        "ikon": "i-kargo",
+        "baslik": "Türkiye'ye kargo",
+        "metin": "Çerkezköy dışındaysanız cihazınızı garantili şekilde kargoyla gönderiyoruz."
+      }
+    ]
+  }
+}

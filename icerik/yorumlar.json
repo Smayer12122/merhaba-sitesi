@@ -1,0 +1,38 @@
+{
+  "yorumlar": {
+    "baslik": "Google'da 129 değerlendirme, hepsi 5 yıldız",
+    "puan": "5,0",
+    "adet": "129 değerlendirme",
+    "dagilim": "Merkez 103 · Cadde Şube 26",
+    "liste": [
+      {
+        "metin": "Telefonum şarj olmuyordu. Meğerse kablosu yerinden çıkmış, ücret bile almadılar. İşini hakkıyla yapan insanlar.",
+        "isim": "Halit B.",
+        "harf": "H",
+        "sube": "Merkez Şube"
+      },
+      {
+        "metin": "Tereddüt etmeden sıfır ve ikinci el cihaz alınabilecek en iyi yer. Şehir dışına garantili kargo da yapıyorlar.",
+        "isim": "Uğur",
+        "harf": "U",
+        "sube": "Merkez Şube"
+      },
+      {
+        "metin": "İkinci el telefon aldım, birçok kez de aldım. Çok temiz cihazları bulunuyor ve fiyatları makul.",
+        "isim": "Furkan K.",
+        "harf": "F",
+        "sube": "Cadde Şube"
+      },
+      {
+        "metin": "İkinci el telefon aldım, sıfır gibiydi. Gerçekten çok temiz telefonları var, şiddetle tavsiye ederim.",
+        "isim": "Recep A.",
+        "harf": "R",
+        "sube": "Cadde Şube"
+      }
+    ],
+    "merkezLink": "https://www.google.com/maps/place/ATA+%C4%B0LET%C4%B0%C5%9E%C4%B0M/data=!4m7!3m6!1s0x14b527f6597d196f:0x3b9902e30d7003fe!8m2!3d41.286586!4d27.998465!16s%2Fg%2F11q43vdyyd",
+    "merkezEtiket": "Merkez Şube (103)",
+    "caddeLink": "https://www.google.com/maps/place/ATA+%C4%B0LET%C4%B0%C5%9E%C4%B0M+-+Cadde+%C5%9Eube/data=!4m7!3m6!1s0x14b5274d53371fdb:0x880f352350b5eb1a!8m2!3d41.2882793!4d27.9988213!16s%2Fg%2F11ydznv9_b",
+    "caddeEtiket": "Cadde Şube (26)"
+  }
+}

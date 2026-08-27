@@ -1,0 +1,258 @@
+backend:
+  name: github
+  repo: Smayer12122/merhaba-sitesi
+  branch: main
+  base_url: https://www.xn--atailetiim-l9b.com
+  auth_endpoint: auth
+
+media_folder: "public/gorsel"
+public_folder: "/gorsel"
+
+locale: tr
+publish_mode: simple
+
+collections:
+  - name: "site"
+    label: "Site İçeriği"
+    files:
+      - name: "duyuru"
+        label: "Duyuru Şeridi"
+        file: "icerik/duyuru.json"
+        description: "Sayfanın en üstünde çıkan renkli şerit. Kampanya duyurusu için."
+        fields:
+          - label: "Duyuru"
+            name: "duyuru"
+            widget: "object"
+            fields:
+              - { label: "Şerit görünsün mü?", name: "acik", widget: "boolean", default: false }
+              - { label: "Duyuru metni", name: "metin", widget: "string" }
+              - { label: "Bağlantı (boş bırakılabilir)", name: "link", widget: "string", required: false }
+
+      - name: "genel"
+        label: "Genel Bilgiler ve İletişim"
+        file: "icerik/genel.json"
+        fields:
+          - label: "Genel"
+            name: "genel"
+            widget: "object"
+            fields:
+              - { label: "Tarayıcı sekmesinde çıkan başlık", name: "sayfaBasligi", widget: "string" }
+              - { label: "Google'da çıkan açıklama", name: "aciklama", widget: "text" }
+              - { label: "Firma unvanı", name: "unvan", widget: "string" }
+              - { label: "Şehir", name: "sehir", widget: "string" }
+          - label: "Çalışma Saatleri"
+            name: "saatler"
+            widget: "object"
+            fields:
+              - { label: "Şube kartı — 1. satır", name: "kisa1", widget: "string" }
+              - { label: "Şube kartı — 2. satır", name: "kisa2", widget: "string" }
+              - { label: "Alt bilgi — 1. satır", name: "dipSatir1", widget: "string" }
+              - { label: "Alt bilgi — 2. satır", name: "dipSatir2", widget: "string" }
+              - { label: "Cümle içinde kullanılan hâli", name: "cumle", widget: "string" }
+          - label: "Telefon Numaraları"
+            name: "iletisim"
+            widget: "object"
+            fields:
+              - { label: "Merkez cep (görünen)", name: "merkezCep", widget: "string" }
+              - { label: "Merkez cep (arama için, +90…)", name: "merkezCepLink", widget: "string" }
+              - { label: "Sabit hat (görünen)", name: "merkezSabit", widget: "string" }
+              - { label: "Sabit hat (arama için, +90…)", name: "merkezSabitLink", widget: "string" }
+              - { label: "Cadde cep (görünen)", name: "caddeCep", widget: "string" }
+              - { label: "Cadde cep (arama için, +90…)", name: "caddeCepLink", widget: "string" }
+              - { label: "Merkez WhatsApp (sadece rakam, 90 ile başlar)", name: "merkezWa", widget: "string" }
+              - { label: "Cadde WhatsApp (sadece rakam, 90 ile başlar)", name: "caddeWa", widget: "string" }
+              - { label: "WhatsApp hazır mesajı (kodlanmış)", name: "waMesaj", widget: "string" }
+
+      - name: "kahraman"
+        label: "Açılış Bölümü"
+        file: "icerik/kahraman.json"
+        fields:
+          - label: "Açılış"
+            name: "kahraman"
+            widget: "object"
+            fields:
+              - { label: "Puan rozeti metni", name: "rozet", widget: "string" }
+              - { label: "Puan rozeti bağlantısı", name: "rozetLink", widget: "string" }
+              - { label: "Başlık — üst satır", name: "baslikUst", widget: "string" }
+              - { label: "Başlık — renkli satır", name: "baslikVurgu", widget: "string" }
+              - { label: "Giriş paragrafı", name: "giris", widget: "text" }
+          - label: "Güven Şeridi (rakamlar)"
+            name: "serit"
+            widget: "list"
+            fields:
+              - { label: "Rakam", name: "deger", widget: "string" }
+              - { label: "Altındaki yazı", name: "etiket", widget: "string" }
+
+      - name: "hakkimizda"
+        label: "Hakkımızda ve Değerlerimiz"
+        file: "icerik/hakkimizda.json"
+        fields:
+          - label: "Hakkımızda"
+            name: "hakkimizda"
+            widget: "object"
+            fields:
+              - { label: "Bölüm başlığı", name: "baslik", widget: "string" }
+              - { label: "1. paragraf", name: "paragraf1", widget: "text" }
+              - { label: "2. paragraf", name: "paragraf2", widget: "text" }
+              - { label: "Yan panel başlığı", name: "degerlerBasligi", widget: "string" }
+              - label: "Değerler"
+                name: "degerler"
+                widget: "list"
+                fields:
+                  - label: "Simge"
+                    name: "ikon"
+                    widget: "select"
+                    options:
+                      - { label: "Kalkan", value: "i-kalkan" }
+                      - { label: "Yıldız", value: "i-yildiz" }
+                      - { label: "Yenile", value: "i-yenile" }
+                      - { label: "Telefon", value: "i-telefon" }
+                      - { label: "Hedef", value: "i-hedef" }
+                      - { label: "Pusula", value: "i-pusula" }
+                      - { label: "Tamir", value: "i-tamir" }
+                  - { label: "Başlık", name: "baslik", widget: "string" }
+                  - { label: "Açıklama", name: "metin", widget: "string" }
+
+      - name: "ilkeler"
+        label: "Misyon ve Vizyon"
+        file: "icerik/ilkeler.json"
+        fields:
+          - label: "İlkelerimiz"
+            name: "ilkeler"
+            widget: "object"
+            fields:
+              - { label: "Bölüm başlığı", name: "baslik", widget: "string" }
+              - { label: "Misyonumuz", name: "misyon", widget: "text" }
+              - { label: "Vizyonumuz", name: "vizyon", widget: "text" }
+
+      - name: "hizmetler"
+        label: "Hizmetler"
+        file: "icerik/hizmetler.json"
+        fields:
+          - label: "Hizmetler"
+            name: "hizmetler"
+            widget: "object"
+            fields:
+              - { label: "Bölüm başlığı", name: "baslik", widget: "string" }
+              - { label: "Giriş paragrafı", name: "giris", widget: "text" }
+              - { label: "Rozet yazısı", name: "not", widget: "string" }
+              - label: "Hizmet kartları"
+                name: "liste"
+                widget: "list"
+                fields:
+                  - label: "Simge"
+                    name: "ikon"
+                    widget: "select"
+                    options:
+                      - { label: "Yeni telefon", value: "i-yeni" }
+                      - { label: "İkinci el / yenile", value: "i-yenile" }
+                      - { label: "Tamir", value: "i-tamir" }
+                      - { label: "Kulaklık / aksesuar", value: "i-kulaklik" }
+                      - { label: "Tablet", value: "i-tablet" }
+                      - { label: "Kredi kartı / taksit", value: "i-kart" }
+                      - { label: "Fatura", value: "i-fatura" }
+                      - { label: "Kargo", value: "i-kargo" }
+                      - { label: "Kalkan", value: "i-kalkan" }
+                      - { label: "Takas", value: "i-takas" }
+                  - { label: "Kart başlığı", name: "baslik", widget: "string" }
+                  - { label: "Kart açıklaması", name: "metin", widget: "text" }
+
+      - name: "yorumlar"
+        label: "Google Yorumları"
+        file: "icerik/yorumlar.json"
+        fields:
+          - label: "Yorumlar"
+            name: "yorumlar"
+            widget: "object"
+            fields:
+              - { label: "Bölüm başlığı", name: "baslik", widget: "string" }
+              - { label: "Puan (örn. 5,0)", name: "puan", widget: "string" }
+              - { label: "Değerlendirme sayısı yazısı", name: "adet", widget: "string" }
+              - { label: "Şube dağılımı yazısı", name: "dagilim", widget: "string" }
+              - label: "Yorumlar"
+                name: "liste"
+                widget: "list"
+                fields:
+                  - { label: "Yorum metni", name: "metin", widget: "text" }
+                  - { label: "Yorumu yazan", name: "isim", widget: "string" }
+                  - { label: "Baş harf (yuvarlak simgede çıkar)", name: "harf", widget: "string" }
+                  - label: "Hangi şube"
+                    name: "sube"
+                    widget: "select"
+                    options: ["Merkez Şube", "Cadde Şube"]
+              - { label: "Merkez Google bağlantısı", name: "merkezLink", widget: "string" }
+              - { label: "Merkez bağlantı yazısı", name: "merkezEtiket", widget: "string" }
+              - { label: "Cadde Google bağlantısı", name: "caddeLink", widget: "string" }
+              - { label: "Cadde bağlantı yazısı", name: "caddeEtiket", widget: "string" }
+
+      - name: "galeri"
+        label: "Mağaza Fotoğrafları"
+        file: "icerik/galeri.json"
+        fields:
+          - label: "Galeri"
+            name: "galeri"
+            widget: "object"
+            fields:
+              - { label: "Bölüm başlığı", name: "baslik", widget: "string" }
+              - { label: "Giriş paragrafı", name: "giris", widget: "text" }
+              - label: "Şube grupları"
+                name: "gruplar"
+                widget: "list"
+                fields:
+                  - { label: "Şube adı", name: "ad", widget: "string" }
+                  - { label: "Sokak/cadde etiketi", name: "etiket", widget: "string" }
+                  - { label: "Üçlü dizilim (hepsi dikey fotoğrafsa işaretle)", name: "uclu", widget: "boolean", default: false }
+                  - label: "Fotoğraflar"
+                    name: "fotograflar"
+                    widget: "list"
+                    fields:
+                      - { label: "Fotoğraf", name: "dosya", widget: "image" }
+                      - { label: "Alt yazı", name: "yazi", widget: "string" }
+                      - { label: "Görme engelliler için açıklama", name: "alt", widget: "string" }
+                      - { label: "Dikey fotoğraf mı?", name: "dikey", widget: "boolean", default: false }
+                      - { label: "srcset (dokunma)", name: "srcset", widget: "string", required: false }
+                      - { label: "sizes (dokunma)", name: "sizes", widget: "string", required: false }
+                      - { label: "Genişlik (dokunma)", name: "en", widget: "string", required: false }
+                      - { label: "Yükseklik (dokunma)", name: "boy", widget: "string", required: false }
+
+      - name: "subeler"
+        label: "Şubeler"
+        file: "icerik/subeler.json"
+        fields:
+          - label: "Şubeler Bölümü"
+            name: "subelerBolumu"
+            widget: "object"
+            fields:
+              - { label: "Bölüm başlığı", name: "baslik", widget: "string" }
+              - { label: "Giriş paragrafı", name: "giris", widget: "text" }
+              - label: "Şubeler"
+                name: "liste"
+                widget: "list"
+                fields:
+                  - { label: "Şube adı", name: "ad", widget: "string" }
+                  - { label: "Sokak/cadde etiketi", name: "etiket", widget: "string" }
+                  - { label: "Adres", name: "adres", widget: "text" }
+                  - { label: "Cep telefonu (görünen)", name: "cep", widget: "string" }
+                  - { label: "Cep telefonu (arama için, +90…)", name: "cepLink", widget: "string" }
+                  - { label: "WhatsApp numarası (sadece rakam, 90 ile başlar)", name: "waLink", widget: "string" }
+                  - { label: "Sabit hat (görünen, boş bırakılabilir)", name: "sabit", widget: "string", required: false }
+                  - { label: "Sabit hat (arama için)", name: "sabitLink", widget: "string", required: false }
+                  - { label: "Harita koordinatı (enlem,boylam)", name: "koordinat", widget: "string" }
+                  - { label: "WhatsApp mesajına eklenecek not", name: "waNot", widget: "string", required: false }
+              - { label: "Haritada gösterilecek koordinat", name: "haritaKoordinat", widget: "string" }
+
+      - name: "kapanis"
+        label: "Kapanış ve Alt Bilgi"
+        file: "icerik/kapanis.json"
+        fields:
+          - label: "Kapanış Çağrısı"
+            name: "cagri"
+            widget: "object"
+            fields:
+              - { label: "Başlık", name: "baslik", widget: "string" }
+              - { label: "Metin", name: "giris", widget: "text" }
+          - label: "Alt Bilgi"
+            name: "dip"
+            widget: "object"
+            fields:
+              - { label: "Logo altındaki tanım", name: "tanim", widget: "text" }

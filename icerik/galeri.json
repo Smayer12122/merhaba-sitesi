@@ -1,0 +1,82 @@
+{
+  "galeri": {
+    "baslik": "Şubelerimizden kareler",
+    "giris": "Şubelerimizin dış ve iç görünümü: geniş aksesuar reyonu, teşhir vitrini ve bekleme alanı.",
+    "gruplar": [
+      {
+        "ad": "Cadde Şube",
+        "etiket": "Atatürk Caddesi",
+        "uclu": false,
+        "fotograflar": [
+          {
+            "dosya": "/gorsel/cadde-vitrin-kucuk.jpg",
+            "srcset": "/gorsel/cadde-vitrin-kucuk.jpg 500w, /gorsel/cadde-vitrin-orta.jpg 750w, /gorsel/cadde-vitrin.jpg 1000w",
+            "sizes": "(max-width: 720px) 92vw, (max-width: 1184px) 40vw, 460px",
+            "en": "500",
+            "boy": "777",
+            "yazi": "Cadde Şube vitrini",
+            "alt": "ATA İLETİŞİM Cadde Şube vitrini ve tabelası",
+            "dikey": true
+          },
+          {
+            "dosya": "/gorsel/cadde-ic-2-kucuk.jpg",
+            "srcset": "/gorsel/cadde-ic-2-kucuk.jpg 700w, /gorsel/cadde-ic-2.jpg 1400w",
+            "sizes": "(max-width: 720px) 92vw, (max-width: 1184px) 54vw, 622px",
+            "en": "700",
+            "boy": "466",
+            "yazi": "Aksesuar reyonu ve teşhir vitrini",
+            "alt": "Aksesuar reyonu ve teşhir vitrini",
+            "dikey": false
+          },
+          {
+            "dosya": "/gorsel/cadde-ic-1-kucuk.jpg",
+            "srcset": "/gorsel/cadde-ic-1-kucuk.jpg 700w, /gorsel/cadde-ic-1.jpg 1400w",
+            "sizes": "(max-width: 720px) 92vw, (max-width: 1184px) 54vw, 622px",
+            "en": "700",
+            "boy": "466",
+            "yazi": "Danışma bankosu ve oturma köşesi",
+            "alt": "Danışma bankosu ve oturma köşesi",
+            "dikey": false
+          }
+        ]
+      },
+      {
+        "ad": "Merkez Şube",
+        "etiket": "Barbaros Caddesi",
+        "uclu": true,
+        "fotograflar": [
+          {
+            "dosya": "/gorsel/merkez-vitrin-kucuk.jpg",
+            "srcset": "/gorsel/merkez-vitrin-kucuk.jpg 380w, /gorsel/merkez-vitrin.jpg 760w, /gorsel/merkez-vitrin-buyuk.jpg 1120w",
+            "sizes": "(max-width: 720px) 92vw, (max-width: 1184px) 30vw, 356px",
+            "en": "380",
+            "boy": "507",
+            "yazi": "Merkez Şube cephesi",
+            "alt": "ATA İLETİŞİM Merkez Şube tabelası ve cephesi",
+            "dikey": false
+          },
+          {
+            "dosya": "/gorsel/merkez-ic-1-kucuk.jpg",
+            "srcset": "/gorsel/merkez-ic-1-kucuk.jpg 380w, /gorsel/merkez-ic-1.jpg 760w, /gorsel/merkez-ic-1-buyuk.jpg 1120w",
+            "sizes": "(max-width: 720px) 92vw, (max-width: 1184px) 30vw, 356px",
+            "en": "380",
+            "boy": "507",
+            "yazi": "Aksesuar rafları ve teşhir vitrini",
+            "alt": "Aksesuar rafları: akıllı saat, kulaklık ve hoparlör çeşitleri",
+            "dikey": false
+          },
+          {
+            "dosya": "/gorsel/merkez-ic-2-kucuk.jpg",
+            "srcset": "/gorsel/merkez-ic-2-kucuk.jpg 380w, /gorsel/merkez-ic-2.jpg 760w, /gorsel/merkez-ic-2-buyuk.jpg 1120w",
+            "sizes": "(max-width: 720px) 92vw, (max-width: 1184px) 30vw, 356px",
+            "en": "380",
+            "boy": "507",
+            "yazi": "Danışma bankosu",
+            "alt": "Merkez Şube iç görünümü ve danışma bankosu",
+            "dikey": false
+          }
+        ]
+      }
+    ]
+  }
+}

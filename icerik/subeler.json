@@ -1,0 +1,33 @@
+{
+  "subelerBolumu": {
+    "baslik": "Şubelerimiz",
+    "giris": "İki şubemizde de aynı işlemleri yapıyoruz; size hangisi yakınsa oraya uğrayabilir, arayabilir ya da WhatsApp'tan yazabilirsiniz. Hafta içi ve cumartesi 09:00 – 20:30, pazar 11:00 – 19:00 arası açığız.",
+    "liste": [
+      {
+        "ad": "Merkez Şube",
+        "etiket": "Barbaros Caddesi",
+        "adres": "Gazi Osman Paşa Mah., Barbaros Cd. No: 4/B<br>59500 Çerkezköy / Tekirdağ",
+        "cep": "0541 236 88 58",
+        "cepLink": "+905412368858",
+        "sabit": "0282 725 19 39",
+        "sabitLink": "+902827251939",
+        "koordinat": "41.286586,27.998465",
+        "waNot": "Merkez%20%C5%9Fube...",
+        "waLink": "905412368858"
+      },
+      {
+        "ad": "Cadde Şube",
+        "etiket": "Atatürk Caddesi",
+        "adres": "Gazi Osman Paşa Mah., Atatürk Cd. No: 57/C<br>59500 Çerkezköy / Tekirdağ",
+        "cep": "0543 128 59 60",
+        "cepLink": "+905431285960",
+        "sabit": "",
+        "sabitLink": "",
+        "koordinat": "41.2882793,27.9988213",
+        "waNot": "Cadde%20%C5%9Fube...",
+        "waLink": "905431285960"
+      }
+    ],
+    "haritaKoordinat": "41.286586,27.998465"
+  }
+}

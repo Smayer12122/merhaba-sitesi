@@ -1,0 +1,35 @@
+{
+  "hakkimizda": {
+    "baslik": "Telefon almak bir güven işidir",
+    "paragraf1": "ATA İLETİŞİM, 2022 yılından bu yana Çerkezköy'de iki şubesiyle hizmet veren bir cep telefonu mağazasıdır. Sıfır ve ikinci el cihaz satışı, cihaz alımı ve teknik servis olmak üzere telefonla ilgili her ihtiyaca tek noktadan çözüm üretiyoruz.",
+    "paragraf2": "Satışa sunduğumuz ikinci el cihazların tamamı, rafa çıkmadan önce tek tek kontrolden geçer; ölçütlerimizi karşılamayan hiçbir cihazı satışa çıkarmayız. Mağazamız 2022'de açıldı; ancak ekibimizin sektördeki tecrübesi 10 yılı aşıyor. Teknik serviste önce arızayı tespit eder, gerçekten gerekmeyen bir işlem için ücret talep etmeyiz. Google'daki 129 değerlendirmenin tamamının 5 yıldız olması, bu yaklaşımın karşılığıdır.",
+    "degerlerBasligi": "Değerlerimiz",
+    "degerler": [
+      {
+        "ikon": "i-kalkan",
+        "baslik": "Dürüstlük",
+        "metin": "Gerekmeyen işlem için ücret almayız."
+      },
+      {
+        "ikon": "i-yildiz",
+        "baslik": "Şeffaflık",
+        "metin": "Cihazın durumunu olduğu gibi anlatırız."
+      },
+      {
+        "ikon": "i-yenile",
+        "baslik": "Kalite kontrolü",
+        "metin": "Satışa sunduğumuz her ikinci el cihaz tek tek kontrolden geçer."
+      },
+      {
+        "ikon": "i-telefon",
+        "baslik": "Satış sonrası",
+        "metin": "Aldıktan sonra da ulaşabileceğiniz bir yer."
+      },
+      {
+        "ikon": "i-hedef",
+        "baslik": "Tecrübe",
+        "metin": "Ekibimizin sektörde 10 yılı aşkın deneyimi var."
+      }
+    ]
+  }
+}
