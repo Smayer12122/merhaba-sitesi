@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sayfa bulunamadı — ATA İLETİŞİM</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0d1b30">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2318d8ff'/%3E%3Cstop offset='.55' stop-color='%23a860f0'/%3E%3Cstop offset='1' stop-color='%23f018f0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='23' font-family='system-ui,sans-serif' font-size='18' font-weight='800' fill='%23fff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+  document.documentElement.classList.add('js');
+  try {
+    var t = localStorage.getItem('tema');
+    if (t) document.documentElement.dataset.tema = t;
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<svg class="ikon-deposu" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-telefon" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2Z"/></symbol>
+</svg>
+
+<div class="fon" aria-hidden="true">
+  <div class="fon-mesh"></div>
+  <div class="fon-izgara"></div>
+  <div class="fon-grain"></div>
+</div>
+
+<main class="hata-sayfa">
+  <div class="kap dar orta">
+    <a href="/" aria-label="ATA İLETİŞİM — ana sayfa">
+      <img class="hata-logo" src="/gorsel/logo.png" srcset="/gorsel/logo.png 900w, /gorsel/logo@2x.png 1800w" sizes="200px" alt="ATA İLETİŞİM" width="900" height="475">
+    </a>
+    <h1>Bu sayfa <span class="vurgulu">yok</span></h1>
+    <p class="giris">Aradığınız sayfa taşınmış ya da hiç var olmamış olabilir. Ana sayfadan devam edebilirsiniz.</p>
+    <div class="dugmeler orta-dugmeler">
+      <a class="dugme birincil" href="/">Ana sayfaya dön</a>
+      <a class="dugme ikincil" href="tel:+905412368858">
+        <svg class="ikon" aria-hidden="true"><use href="#i-telefon"/></svg>
+        Bizi ara
+      </a>
+    </div>
+  </div>
+</main>
+
+<style>
+  .hata-sayfa { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 40px 0; }
+  .hata-sayfa .giris { margin-left: auto; margin-right: auto; }
+  .hata-logo { height: 106px; width: auto; margin: 0 auto 24px; display: block; }
+</style>
+
+</body>
+</html>
