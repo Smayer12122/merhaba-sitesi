@@ -352,6 +352,18 @@ const server = http.createServer(async (req, res) => {
     await dosyaSun(req, res, dosyaYolu);
   } catch (hata) {
     if (hata.code === 'ENOENT' || hata.code === 'EISDIR' || hata.code === 'ENOTDIR') {
+      // İstenen bir klasörse sonuna eğik çizgi ekleyip yönlendir: /admin -> /admin/
+      // Böyle olmazsa klasör içindeki göreli adresler (./config.yml) yanlış çözülür.
+      if (hata.code === 'EISDIR' && !yol.endsWith('/')) {
+        try {
+          await fs.promises.access(path.join(dosyaYolu, 'index.html'));
+          const sorgu = adres.slice(yol.length);
+          res.writeHead(301, { Location: yol + '/' + sorgu, 'Cache-Control': 'no-cache' });
+          return res.end();
+        } catch {
+          /* klasörde index.html yok, aşağıdaki 404'e düş */
+        }
+      }
       if (!path.extname(dosyaYolu)) {
         try {
           return await dosyaSun(req, res, dosyaYolu + '.html');
