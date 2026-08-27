@@ -1,10 +1,11 @@
 {
-  "name": "merhaba-sitesi",
-  "version": "1.0.0",
-  "description": "Sadece Merhaba yazan basit bir Node.js sitesi",
+  "name": "ata-iletisim-sitesi",
+  "version": "2.0.0",
+  "description": "ATA İLETİŞİM - Çerkezköy cep telefonu mağazası tanıtım sitesi",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "engines": {
     "node": ">=18"
