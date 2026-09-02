@@ -34,8 +34,8 @@
 {
   "@context": "https://schema.org",
   "@type": "MobilePhoneStore",
-  "name": "{{genel.unvan}}",
-  "telephone": "{{iletisim.merkezCepLink}}",
+  "name": "{{genel.unvan|json}}",
+  "telephone": "{{iletisim.merkezCepLink|json}}",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Gazi Osman Paşa Mah., Barbaros Cd. No: 4/B",
@@ -88,7 +88,7 @@
   <div class="kap duyuru-ic">
     <svg class="ikon" aria-hidden="true"><use href="#i-yildiz"/></svg>
     <span>{{{duyuru.metin}}}</span>
-    {{#duyuru.link}}<a href="{{duyuru.link}}">Ayrıntı →</a>{{/duyuru.link}}
+    {{#duyuru.link}}<a href="{{duyuru.link|url}}">Ayrıntı →</a>{{/duyuru.link}}
   </div>
 </div>
 {{/duyuru.acik}}
@@ -128,7 +128,7 @@
 
   <section class="kahraman">
     <div class="kap kahraman-ic">
-      <a class="puan-rozet cam" href="{{kahraman.rozetLink}}" target="_blank" rel="noopener">
+      <a class="puan-rozet cam" href="{{kahraman.rozetLink|url}}" target="_blank" rel="noopener">
         <span class="yildizlar" aria-hidden="true">
           <svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg><svg class="ikon"><use href="#i-yildiz"/></svg>
         </span>
@@ -258,9 +258,9 @@
 
       <p class="alt-not">
         Google'daki yorumların tamamı:
-        <a href="{{yorumlar.merkezLink}}" target="_blank" rel="noopener">{{yorumlar.merkezEtiket}}</a>
+        <a href="{{yorumlar.merkezLink|url}}" target="_blank" rel="noopener">{{yorumlar.merkezEtiket}}</a>
         &nbsp;·&nbsp;
-        <a href="{{yorumlar.caddeLink}}" target="_blank" rel="noopener">{{yorumlar.caddeEtiket}}</a>
+        <a href="{{yorumlar.caddeLink|url}}" target="_blank" rel="noopener">{{yorumlar.caddeEtiket}}</a>
       </p>
     </div>
   </section>
@@ -275,7 +275,7 @@
       <h3 class="galeri-baslik">{{ad}} <span>{{etiket}}</span></h3>
       <div class="galeri{{#uclu}} galeri-uclu{{/uclu}}">
         {{#fotograflar}}<figure class="galeri-oge{{#dikey}} galeri-dikey{{/dikey}}{{^dikey}} galeri-yatay{{/dikey}}" data-goster>
-          <img src="{{dosya}}"{{#srcset}} srcset="{{srcset}}"{{/srcset}}{{#sizes}} sizes="{{sizes}}"{{/sizes}}
+          <img src="{{dosya|url}}"{{#srcset}} srcset="{{srcset}}"{{/srcset}}{{#sizes}} sizes="{{sizes}}"{{/sizes}}
                alt="{{alt}}"{{#en}} width="{{en}}"{{/en}}{{#boy}} height="{{boy}}"{{/boy}} loading="lazy">
           <figcaption>{{yazi}}</figcaption>
         </figure>

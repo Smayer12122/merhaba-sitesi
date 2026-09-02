@@ -49,7 +49,7 @@ function etiketUret(bilgi) {
 
 /* ---------------- Ana sayfa üretimi ---------------- */
 
-let onbellek = { html: null, damga: 0 };
+let onbellek = { html: null, damga: 0, sonBakis: 0 };
 
 // icerik/ klasöründeki bütün .json dosyalarını tek bir nesnede birleştirir.
 // Her dosya panelde ayrı bir bölüm olarak düzenlenir; biri kaydedilince
@@ -69,15 +69,23 @@ function icerikTopla() {
 }
 
 function anaSayfaUret() {
+  // Tazelik kontrolü her istekte bütün .json dosyalarını diskten okuyordu; çok
+  // istek gelince bu eşzamanlı okumalar olay döngüsünü kilitliyordu. Artık
+  // saniyede bir bakılır, arada hazır sayfa döner.
+  if (onbellek.html && Date.now() - onbellek.sonBakis < 1000) return onbellek.html;
+
   const { icerik, damga: icerikDamgasi } = icerikTopla();
   const damga = fs.statSync(SABLON_DOSYASI).mtimeMs + icerikDamgasi;
 
-  if (onbellek.html && onbellek.damga === damga) return onbellek.html;
+  if (onbellek.html && onbellek.damga === damga) {
+    onbellek.sonBakis = Date.now();
+    return onbellek.html;
+  }
 
   const sablon = fs.readFileSync(SABLON_DOSYASI, 'utf8');
   const html = derle(sablon)(icerik);
 
-  onbellek = { html, damga };
+  onbellek = { html, damga, sonBakis: Date.now() };
   return html;
 }
 
@@ -164,6 +172,27 @@ async function dosyaSun(req, res, dosyaYolu) {
   fs.createReadStream(dosyaYolu).pipe(res);
 }
 
+// Panel yerelde açıldığında girişin de yerel sunucudan geçmesi gerekir; yoksa
+// config.yml'deki canlı base_url yüzünden giriş penceresi canlı siteye gider.
+// Canlıda bu kod yoluna hiç girilmez, dosya olduğu gibi sunulur.
+function yerelMi(req) {
+  const sunucu = (req.headers.host || '').split(':')[0];
+  return sunucu === 'localhost' || sunucu === '127.0.0.1';
+}
+
+function yerelPanelAyari(req, res) {
+  return fs.promises
+    .readFile(path.join(PUBLIC_DIR, 'admin', 'config.yml'), 'utf8')
+    .then((metin) => {
+      const govde = metin.replace(/^(\s*base_url:).*$/m, `$1 http://${req.headers.host}`);
+      yanitla(res, 200, req.method === 'HEAD' ? undefined : govde, {
+        'Content-Type': 'text/yaml; charset=utf-8',
+        'Cache-Control': 'no-store',
+      });
+    })
+    .catch(() => bulunamadi(req, res));
+}
+
 function bulunamadi(req, res) {
   fs.promises
     .readFile(path.join(PUBLIC_DIR, '404.html'))
@@ -185,9 +214,28 @@ function bulunamadi(req, res) {
 // Aşağıdaki iki uç nokta o aracı. Çalışması için Render'da iki ortam değişkeni
 // tanımlı olmalı: GITHUB_CLIENT_ID ve GITHUB_CLIENT_SECRET.
 
-const OAUTH_ID = process.env.GITHUB_CLIENT_ID || '';
-const OAUTH_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
+// Anahtarlar Render paneline kopyala-yapıştır ile giriliyor; başa/sona kaçan
+// boşluk, satır sonu ya da tırnak işareti GitHub tarafında "yanlış anahtar"
+// sayılır ve giriş sessizce başarısız olur. Bu yüzden okurken temizliyoruz.
+function ortamDegeri(ad) {
+  return (process.env[ad] || '').trim().replace(/^["']|["']$/g, '').trim();
+}
+
+const OAUTH_ID = ortamDegeri('GITHUB_CLIENT_ID');
+const OAUTH_SECRET = ortamDegeri('GITHUB_CLIENT_SECRET');
+
+// GÜVENLİK: depo herkese açık olduğu için "public_repo" yetiyor. Eskiden "repo"
+// isteniyordu; o kapsam anahtara hesabın BÜTÜN özel depolarına da yazma yetkisi
+// verir. Depoyu özele çevirirseniz Render'da GITHUB_SCOPE=repo tanımlayın.
+const OAUTH_KAPSAM = ortamDegeri('GITHUB_SCOPE') || 'public_repo';
+
+// Ayarlanırsa geri dönüş adresi Host başlığına değil buna göre kurulur; böylece
+// sahte Host başlığı gönderen istekler adresi saptıramaz.
+// Örnek: SITE_ADRESI=https://www.xn--atailetiim-l9b.com
+const GENEL_ADRES = ortamDegeri('SITE_ADRESI').replace(/\/+$/, '');
+
 const bekleyenDurumlar = new Map(); // state -> son kullanma zamanı
+const EN_FAZLA_DURUM = 5000;
 
 function durumUret() {
   const durum = crypto.randomBytes(16).toString('hex');
@@ -196,11 +244,21 @@ function durumUret() {
   for (const [anahtar, bitis] of bekleyenDurumlar) {
     if (bitis < Date.now()) bekleyenDurumlar.delete(anahtar);
   }
+  // Art arda /auth isteği yağdırıp belleği şişirmeye karşı üst sınır:
+  // en eski kayıtlar düşer (Map ekleme sırasını korur).
+  while (bekleyenDurumlar.size > EN_FAZLA_DURUM) {
+    bekleyenDurumlar.delete(bekleyenDurumlar.keys().next().value);
+  }
   return durum;
 }
 
 function kokAdres(req) {
-  const protokol = (req.headers['x-forwarded-proto'] || 'https').split(',')[0].trim();
+  // Render isteği https olarak iletir. Bu başlık yoksa yereldeyiz demektir;
+  // orada TLS olmadığı için http kullanmalıyız, yoksa GitHub var olmayan bir
+  // https://localhost adresine geri dönmeye çalışır.
+  if (GENEL_ADRES) return GENEL_ADRES;
+  const iletilen = (req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
+  const protokol = iletilen || (yerelMi(req) ? 'http' : 'https');
   return `${protokol}://${req.headers.host}`;
 }
 
@@ -214,7 +272,7 @@ function girisBaslat(req, res) {
   const hedef = new URL('https://github.com/login/oauth/authorize');
   hedef.searchParams.set('client_id', OAUTH_ID);
   hedef.searchParams.set('redirect_uri', `${kokAdres(req)}/callback`);
-  hedef.searchParams.set('scope', 'repo,user');
+  hedef.searchParams.set('scope', OAUTH_KAPSAM);
   hedef.searchParams.set('state', durum);
   res.writeHead(302, { Location: hedef.toString(), 'Cache-Control': 'no-store' });
   res.end();
@@ -258,23 +316,54 @@ function jetonIste(kod) {
   });
 }
 
+// GitHub'ın hata kodlarını, paneli kullanan kişinin anlayacağı Türkçeye çevirir.
+function jetonHatasiMetni(yanit, kok) {
+  switch (yanit.error) {
+    case 'incorrect_client_credentials':
+      return 'GitHub anahtarları eşleşmiyor. Render → Environment altındaki GITHUB_CLIENT_ID ve GITHUB_CLIENT_SECRET değerlerini GitHub OAuth uygulamasındakiyle birebir aynı yapın.';
+    case 'redirect_uri_mismatch':
+      return `GitHub uygulamasındaki geri dönüş adresi uyuşmuyor. "Authorization callback URL" tam olarak şu olmalı: ${kok}/callback`;
+    case 'bad_verification_code':
+      return 'Giriş kodu geçersiz ya da süresi dolmuş. Pencereyi kapatıp tekrar deneyin.';
+    default:
+      return yanit.error_description || yanit.error || 'Erişim anahtarı alınamadı';
+  }
+}
+
+function metniKacir(metin) {
+  return String(metin).replace(/[&<>]/g, (k) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[k]);
+}
+
 // Decap CMS açtığı pencereden postMessage bekler; sonucu o biçimde döneriz.
-function kapanisSayfasi(sonuc, yuk) {
-  const mesaj = JSON.stringify(`authorization:github:${sonuc}:${JSON.stringify(yuk)}`);
+//
+// GÜVENLİK: mesaj yalnızca kendi sitemizin adresine gönderilir. Eskiden hedef
+// olarak '*' kullanılıyordu; o durumda kötü niyetli bir site bu pencereyi kendi
+// sayfasından açıp GitHub erişim anahtarını doğrudan okuyabiliyordu.
+function kapanisSayfasi(sonuc, yuk, kok) {
+  // </script> yazımının betiği erken kapatmasını engellemek için < kaçırılır.
+  const mesaj = JSON.stringify(`authorization:github:${sonuc}:${JSON.stringify(yuk)}`).replace(/</g, '\\u003c');
+  const hedef = JSON.stringify(kok);
+  const basarili = sonuc === 'success';
+  const aciklama = basarili
+    ? 'Giriş başarılı, pencere kapanıyor…'
+    : `Giriş yapılamadı.</p><p style="color:#b00">${metniKacir(yuk.message || '')}`;
   return `<!doctype html><meta charset="utf-8"><title>Giriş</title>
-<body style="font-family:system-ui;padding:2rem">
-<p>${sonuc === 'success' ? 'Giriş başarılı, pencere kapanıyor…' : 'Giriş yapılamadı.'}</p>
+<body style="font-family:system-ui;padding:2rem;line-height:1.6;max-width:38rem">
+<p>${aciklama}</p>
 <script>
 (function () {
   var mesaj = ${mesaj};
-  function gonder(e) {
+  // Adres verilmemişse sayfanın kendi adresi zaten doğru hedeftir (aynı site).
+  var hedef = ${hedef} || window.location.origin;
+  function gonder() {
     if (!window.opener) return;
-    window.opener.postMessage(mesaj, e && e.origin ? e.origin : '*');
+    window.opener.postMessage(mesaj, hedef);
   }
   window.addEventListener('message', gonder, false);
-  if (window.opener) window.opener.postMessage('authorizing:github', '*');
+  if (window.opener) window.opener.postMessage('authorizing:github', hedef);
   setTimeout(function () { gonder(); }, 300);
-  setTimeout(function () { window.close(); }, 1200);
+  // Hata varsa pencere açık kalsın; yoksa sebep okunamadan kapanıyor.
+  ${basarili ? 'setTimeout(function () { window.close(); }, 1200);' : ''}
 })();
 </script>
 </body>`;
@@ -286,14 +375,14 @@ async function girisDon(req, res, adres) {
   const durum = sorgu.get('state');
 
   if (!durum || !bekleyenDurumlar.has(durum)) {
-    return yanitla(res, 400, kapanisSayfasi('error', { message: 'Oturum doğrulanamadı, tekrar deneyin.' }), {
+    return yanitla(res, 400, kapanisSayfasi('error', { message: 'Oturum doğrulanamadı, tekrar deneyin.' }, kokAdres(req)), {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
   bekleyenDurumlar.delete(durum);
 
   if (!kod) {
-    return yanitla(res, 400, kapanisSayfasi('error', { message: 'GitHub kod göndermedi.' }), {
+    return yanitla(res, 400, kapanisSayfasi('error', { message: 'GitHub kod göndermedi.' }, kokAdres(req)), {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
@@ -301,15 +390,16 @@ async function girisDon(req, res, adres) {
   try {
     const yanit = await jetonIste(kod);
     if (!yanit.access_token) {
-      throw new Error(yanit.error_description || 'Erişim anahtarı alınamadı');
+      console.error('GitHub jeton hatası:', yanit.error, '-', yanit.error_description);
+      throw new Error(jetonHatasiMetni(yanit, kokAdres(req)));
     }
-    yanitla(res, 200, kapanisSayfasi('success', { token: yanit.access_token, provider: 'github' }), {
+    yanitla(res, 200, kapanisSayfasi('success', { token: yanit.access_token, provider: 'github' }, kokAdres(req)), {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'no-store',
     });
   } catch (hata) {
     console.error('OAuth hatası:', hata.message);
-    yanitla(res, 500, kapanisSayfasi('error', { message: hata.message }), {
+    yanitla(res, 500, kapanisSayfasi('error', { message: hata.message }, kokAdres(req)), {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
@@ -322,6 +412,15 @@ const server = http.createServer(async (req, res) => {
   res.on('finish', () => {
     console.log(`${req.method} ${req.url} -> ${res.statusCode} (${Date.now() - baslangic}ms)`);
   });
+
+  // Bütün yanıtlara giden güvenlik başlıkları. writeHead ile ayrıca verilen
+  // başlıklar bunların üzerine yazar, o yüzden mevcut davranış bozulmaz.
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY'); // panelin çerçeveye alınıp tıklama tuzağına düşürülmesini engeller
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  if ((req.headers['x-forwarded-proto'] || '').split(',')[0].trim() === 'https') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000');
+  }
 
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     return yanitla(res, 405, 'Yöntem desteklenmiyor', {
@@ -344,6 +443,8 @@ const server = http.createServer(async (req, res) => {
   if (yol === '/callback') return girisDon(req, res, adres);
 
   if (yol === '/' || yol === '/index.html') return anaSayfaSun(req, res);
+
+  if (yol === '/admin/config.yml' && yerelMi(req)) return yerelPanelAyari(req, res);
 
   const dosyaYolu = dosyaYoluCoz(adres);
   if (!dosyaYolu) return bulunamadi(req, res);
@@ -381,6 +482,15 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);
   console.log(`Yönetici girişi: ${OAUTH_ID && OAUTH_SECRET ? 'yapılandırıldı' : 'YAPILANDIRILMADI (GITHUB_CLIENT_ID / GITHUB_CLIENT_SECRET eksik)'}`);
+  // Anahtarların kendisi loga yazılmaz; sadece uzunlukları — yanlış yapıştırma
+  // (eksik karakter, satır sonu, tırnak) buradan anlaşılır.
+  if (OAUTH_ID || OAUTH_SECRET) {
+    console.log(`  GITHUB_CLIENT_ID     : ${OAUTH_ID.length} karakter (beklenen 20)`);
+    console.log(`  GITHUB_CLIENT_SECRET : ${OAUTH_SECRET.length} karakter (beklenen 40)`);
+    if (OAUTH_SECRET.length !== 40) {
+      console.warn('  UYARI: client secret 40 karakterlik değil. GitHub OAuth uygulamasından yeni bir secret üretip Render\'a yapıştırın.');
+    }
+  }
 });
 
 for (const sinyal of ['SIGTERM', 'SIGINT']) {

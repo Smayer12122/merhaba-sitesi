@@ -7,6 +7,8 @@
 //   {{^liste}}…{{/liste}}   → boş/yok ise yazar
 //   {{.}}             → dizi öğesinin kendisi (metin dizilerinde)
 //   {{ust.alt}}       → iç içe alanlar
+//   {{ad|json}}       → JSON metni olarak kaçırır (ld+json bloğu için)
+//   {{ad|url}}        → yalnızca güvenli adresleri geçirir (javascript: engellenir)
 
 function kacisla(deger) {
   return String(deger)
@@ -14,6 +16,22 @@ function kacisla(deger) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+// <script type="application/ld+json"> içine yazarken HTML kaçışı yanlıştır:
+// &quot; oraya olduğu gibi girer ve JSON'u bozar. Burada JSON kaçışı yapılır,
+// ayrıca < karakteri \u003c'ye çevrilerek </script> oluşması engellenir.
+function jsonKacisla(deger) {
+  return JSON.stringify(String(deger)).slice(1, -1).replace(/</g, '\\u003c');
+}
+
+// href/src'nin tamamı panelden geliyorsa kullanılır: "javascript:" ya da
+// "data:" gibi bir adres yazılıp betik çalıştırılmasını engeller.
+const GUVENLI_ONEK = /^(https?:\/\/|\/|#|tel:|mailto:|whatsapp:)/i;
+
+function guvenliAdres(deger) {
+  const metin = String(deger).trim();
+  return GUVENLI_ONEK.test(metin) ? metin : '#';
 }
 
 // Değeri kapsam yığınında arar; en içteki kapsamdan başlar.
@@ -38,7 +56,7 @@ function degerBul(yol, yigin) {
 
 function belirtecleriAyir(sablon) {
   const belirtecler = [];
-  const kalip = /\{\{(\{)?([#^/]?)\s*([\w.]+)\s*\}?\}\}/g;
+  const kalip = /\{\{(\{)?([#^/]?)\s*([\w.]+)\s*(?:\|\s*(\w+)\s*)?\}?\}\}/g;
   let son = 0;
   let eslesme;
 
@@ -53,7 +71,7 @@ function belirtecleriAyir(sablon) {
     if (isaret === '#') belirtecler.push({ tur: 'ac', ad });
     else if (isaret === '^') belirtecler.push({ tur: 'tersAc', ad });
     else if (isaret === '/') belirtecler.push({ tur: 'kapat', ad });
-    else belirtecler.push({ tur: 'degisken', ad, ham });
+    else belirtecler.push({ tur: 'degisken', ad, ham, suzgec: eslesme[4] });
 
     son = kalip.lastIndex;
   }
@@ -106,7 +124,9 @@ function ciz(dugum, kapsamYigini) {
     if (cocuk.tur === 'degisken') {
       const deger = degerBul(cocuk.ad, kapsamYigini);
       if (deger === undefined || deger === null || deger === false) continue;
-      cikti += cocuk.ham ? String(deger) : kacisla(deger);
+      if (cocuk.suzgec === 'json') cikti += jsonKacisla(deger);
+      else if (cocuk.suzgec === 'url') cikti += kacisla(guvenliAdres(deger));
+      else cikti += cocuk.ham ? String(deger) : kacisla(deger);
       continue;
     }
 
@@ -139,4 +159,4 @@ function derle(sablon) {
   return (veri) => ciz(agac, [veri]);
 }
 
-module.exports = { derle, kacisla };
+module.exports = { derle, kacisla, jsonKacisla, guvenliAdres };
