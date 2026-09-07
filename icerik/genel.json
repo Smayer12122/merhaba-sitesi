@@ -3,7 +3,8 @@
     "sayfaBasligi": "ATA İLETİŞİM — Çerkezköy Cep Telefonu Mağazası",
     "aciklama": "ATA İLETİŞİM, Çerkezköy'de iki şubesiyle sıfır ve ikinci el cep telefonu alım satımı, aksesuar, akıllı saat, tablet, teknik servis ve fatura ödeme hizmeti verir. Tüm kredi kartlarına 12 aya varan taksit. Google'da 5,0 puan.",
     "unvan": "ATA İLETİŞİM",
-    "sehir": "Çerkezköy / Tekirdağ"
+    "sehir": "Çerkezköy / Tekirdağ",
+    "siteAdresi": "https://www.xn--atailetiim-l9b.com"
   },
   "saatler": {
     "kisa1": "Pzt – Cmt&nbsp;&nbsp;09:00 – 20:30",
@@ -21,6 +22,7 @@
     "caddeCepLink": "+905431285960",
     "waMesaj": "Merhaba%2C%20siteden%20yaz%C4%B1yorum.",
     "merkezWa": "905412368858",
-    "caddeWa": "905431285960"
+    "caddeWa": "905431285960",
+    "eposta": ""
   }
 }

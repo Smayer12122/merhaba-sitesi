@@ -40,6 +40,7 @@ collections:
               - { label: "Google'da çıkan açıklama", name: "aciklama", widget: "text" }
               - { label: "Firma unvanı", name: "unvan", widget: "string" }
               - { label: "Şehir", name: "sehir", widget: "string" }
+              - { label: "Sitenin adresi (WhatsApp önizlemesi ve Google için — dokunma)", name: "siteAdresi", widget: "string" }
           - label: "Çalışma Saatleri"
             name: "saatler"
             widget: "object"
@@ -59,6 +60,7 @@ collections:
               - { label: "Sabit hat (arama için, +90…)", name: "merkezSabitLink", widget: "string" }
               - { label: "Cadde cep (görünen)", name: "caddeCep", widget: "string" }
               - { label: "Cadde cep (arama için, +90…)", name: "caddeCepLink", widget: "string" }
+              - { label: "E-posta adresi", name: "eposta", widget: "string", required: false }
               - { label: "Merkez WhatsApp (sadece rakam, 90 ile başlar)", name: "merkezWa", widget: "string" }
               - { label: "Cadde WhatsApp (sadece rakam, 90 ile başlar)", name: "caddeWa", widget: "string" }
               - { label: "WhatsApp hazır mesajı (kodlanmış)", name: "waMesaj", widget: "string" }

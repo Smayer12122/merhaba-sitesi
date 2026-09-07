@@ -68,6 +68,99 @@ function icerikTopla() {
   return { icerik, damga };
 }
 
+/* ---------------- Arama motorları için yapısal veri ---------------- */
+//
+// Eskiden bu blok şablonda elle yazılıydı: tek şube, sabit puan, sabit saat.
+// Panelden şube eklenince ya da saat değişince orası eskimiş kalıyordu.
+// Artık içerik dosyalarından üretiliyor, ikisi birbirinden ayrılamaz.
+
+// "Gazi Osman Paşa Mah., Barbaros Cd. No: 4/B<br>59500 Çerkezköy / Tekirdağ"
+function adresAyikla(ham) {
+  const parcalar = String(ham || '').split(/<br\s*\/?>/i);
+  const sokak = (parcalar[0] || '').trim();
+  const ikinci = (parcalar[1] || '').trim();
+  const pk = (ikinci.match(/\b(\d{5})\b/) || [])[1] || '';
+  const kalan = ikinci.replace(/\b\d{5}\b/, '').trim();
+  const [ilce = '', il = ''] = kalan.split('/').map((p) => p.trim());
+  return { sokak, pk, ilce, il };
+}
+
+// "Pzt – Cmt 09:00 – 20:30" → ['09:00', '20:30']
+function saatAyikla(metin, yedek) {
+  const e = String(metin || '').match(/(\d{1,2})[:.](\d{2})\D+(\d{1,2})[:.](\d{2})/);
+  if (!e) return yedek;
+  return [`${e[1].padStart(2, '0')}:${e[2]}`, `${e[3].padStart(2, '0')}:${e[4]}`];
+}
+
+function sayiyaCevir(metin) {
+  const e = String(metin || '').replace(',', '.').match(/\d+(\.\d+)?/);
+  return e ? Number(e[0]) : null;
+}
+
+function yapisalVeriUret(icerik) {
+  const genel = icerik.genel || {};
+  const saatler = icerik.saatler || {};
+  const yorumlar = icerik.yorumlar || {};
+  const kok = String(genel.siteAdresi || '').replace(/\/+$/, '');
+  const subeler = (icerik.subelerBolumu || {}).liste || [];
+
+  const [haftaAc, haftaKapa] = saatAyikla(saatler.dipSatir1, ['09:00', '20:30']);
+  const [pazarAc, pazarKapa] = saatAyikla(saatler.dipSatir2, ['11:00', '19:00']);
+  const acilis = [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      opens: haftaAc,
+      closes: haftaKapa,
+    },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Sunday', opens: pazarAc, closes: pazarKapa },
+  ];
+
+  const puan = sayiyaCevir(yorumlar.puan);
+  const adet = sayiyaCevir(yorumlar.adet);
+  const haritaBaglantilari = [yorumlar.merkezLink, yorumlar.caddeLink].filter(Boolean);
+
+  const dugumler = subeler.map((sube, sira) => {
+    const adres = adresAyikla(sube.adres);
+    const [enlem, boylam] = String(sube.koordinat || '').split(',').map((s) => Number(s.trim()));
+    const dugum = {
+      '@type': 'MobilePhoneStore',
+      '@id': `${kok}/#sube-${sira + 1}`,
+      name: `${genel.unvan || ''} — ${sube.ad || ''}`.trim(),
+      url: kok || undefined,
+      image: kok ? `${kok}/gorsel/logo@2x.png` : undefined,
+      telephone: sube.cepLink || undefined,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: adres.sokak,
+        addressLocality: adres.ilce,
+        addressRegion: adres.il,
+        postalCode: adres.pk,
+        addressCountry: 'TR',
+      },
+      openingHoursSpecification: acilis,
+    };
+    if (Number.isFinite(enlem) && Number.isFinite(boylam)) {
+      dugum.geo = { '@type': 'GeoCoordinates', latitude: enlem, longitude: boylam };
+    }
+    if (haritaBaglantilari[sira]) dugum.sameAs = [haritaBaglantilari[sira]];
+    // Puan bütün işletmeyi temsil ettiği için yalnızca ana şubeye yazılır;
+    // aynı puanı iki ayrı işletmeye yazmak yanıltıcı olur.
+    if (sira === 0 && puan && adet) {
+      dugum.aggregateRating = {
+        '@type': 'AggregateRating',
+        ratingValue: String(puan),
+        reviewCount: String(Math.round(adet)),
+      };
+    }
+    return dugum;
+  });
+
+  if (dugumler.length === 0) return '';
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': dugumler }, null, 2)
+    .replace(/</g, '\\u003c');
+}
+
 function anaSayfaUret() {
   // Tazelik kontrolü her istekte bütün .json dosyalarını diskten okuyordu; çok
   // istek gelince bu eşzamanlı okumalar olay döngüsünü kilitliyordu. Artık
@@ -83,6 +176,7 @@ function anaSayfaUret() {
   }
 
   const sablon = fs.readFileSync(SABLON_DOSYASI, 'utf8');
+  icerik.yapisalVeri = yapisalVeriUret(icerik);
   const html = derle(sablon)(icerik);
 
   onbellek = { html, damga, sonBakis: Date.now() };
@@ -116,6 +210,55 @@ function anaSayfaSun(req, res) {
     'X-Content-Type-Options': 'nosniff',
   });
   res.end(req.method === 'HEAD' ? undefined : govde);
+}
+
+/* ---------------- Arama motoru dosyaları ---------------- */
+//
+// İkisi de adresi Host'tan (ya da SITE_ADRESI'nden) kurar; alan adı değişirse
+// elle güncellenmesi gereken bir yer kalmaz.
+
+function robots(req, res) {
+  const govde = `User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /auth
+Disallow: /callback
+
+Sitemap: ${kokAdres(req)}/sitemap.xml
+`;
+  yanitla(res, 200, req.method === 'HEAD' ? undefined : govde, {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'public, max-age=3600',
+  });
+}
+
+function siteHaritasi(req, res) {
+  let sonDegisim = Date.now();
+  try {
+    const damgalar = fs
+      .readdirSync(ICERIK_DIZINI)
+      .filter((ad) => ad.endsWith('.json'))
+      .map((ad) => fs.statSync(path.join(ICERIK_DIZINI, ad)).mtimeMs);
+    damgalar.push(fs.statSync(SABLON_DOSYASI).mtimeMs);
+    sonDegisim = Math.max(...damgalar);
+  } catch {
+    /* okunamazsa bugünün tarihi kullanılır */
+  }
+
+  const govde = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${kokAdres(req)}/</loc>
+    <lastmod>${new Date(sonDegisim).toISOString().slice(0, 10)}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+`;
+  yanitla(res, 200, req.method === 'HEAD' ? undefined : govde, {
+    'Content-Type': 'application/xml; charset=utf-8',
+    'Cache-Control': 'public, max-age=3600',
+  });
 }
 
 /* ---------------- Statik dosyalar ---------------- */
@@ -441,6 +584,9 @@ const server = http.createServer(async (req, res) => {
 
   if (yol === '/auth') return girisBaslat(req, res);
   if (yol === '/callback') return girisDon(req, res, adres);
+
+  if (yol === '/robots.txt') return robots(req, res);
+  if (yol === '/sitemap.xml') return siteHaritasi(req, res);
 
   if (yol === '/' || yol === '/index.html') return anaSayfaSun(req, res);
 
