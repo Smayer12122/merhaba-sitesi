@@ -8,6 +8,10 @@ backend:
 media_folder: "public/gorsel"
 public_folder: "/gorsel"
 
+# Panelin sol üstünde kendi logon çıkar, "Site" bağlantısı canlı siteye gider.
+site_url: https://www.xn--atailetiim-l9b.com
+logo_url: https://www.xn--atailetiim-l9b.com/gorsel/logo.png
+
 locale: tr
 publish_mode: simple
 
@@ -50,20 +54,33 @@ collections:
               - { label: "Alt bilgi — 1. satır", name: "dipSatir1", widget: "string" }
               - { label: "Alt bilgi — 2. satır", name: "dipSatir2", widget: "string" }
               - { label: "Cümle içinde kullanılan hâli", name: "cumle", widget: "string" }
-          - label: "Telefon Numaraları"
+          - label: "Telefon ve E-posta"
             name: "iletisim"
             widget: "object"
             fields:
-              - { label: "Merkez cep (görünen)", name: "merkezCep", widget: "string" }
-              - { label: "Merkez cep (arama için, +90…)", name: "merkezCepLink", widget: "string" }
-              - { label: "Sabit hat (görünen)", name: "merkezSabit", widget: "string" }
-              - { label: "Sabit hat (arama için, +90…)", name: "merkezSabitLink", widget: "string" }
-              - { label: "Cadde cep (görünen)", name: "caddeCep", widget: "string" }
-              - { label: "Cadde cep (arama için, +90…)", name: "caddeCepLink", widget: "string" }
-              - { label: "E-posta adresi", name: "eposta", widget: "string", required: false }
-              - { label: "Merkez WhatsApp (sadece rakam, 90 ile başlar)", name: "merkezWa", widget: "string" }
-              - { label: "Cadde WhatsApp (sadece rakam, 90 ile başlar)", name: "caddeWa", widget: "string" }
-              - { label: "WhatsApp hazır mesajı (kodlanmış)", name: "waMesaj", widget: "string" }
+              - label: "Merkez Şube cep telefonu"
+                name: "merkezCep"
+                widget: "string"
+                hint: "Yazdığın gibi görünür. Arama ve WhatsApp bağlantıları bundan kendiliğinden üretilir."
+                pattern: ['^0[0-9 ()-]{9,}$', "0 ile başlamalı. Örnek: 0541 236 88 58"]
+              - label: "Sabit hat"
+                name: "merkezSabit"
+                widget: "string"
+                pattern: ['^0[0-9 ()-]{9,}$', "0 ile başlamalı. Örnek: 0282 725 19 39"]
+              - label: "Cadde Şube cep telefonu"
+                name: "caddeCep"
+                widget: "string"
+                pattern: ['^0[0-9 ()-]{9,}$', "0 ile başlamalı. Örnek: 0543 128 59 60"]
+              - label: "E-posta adresi"
+                name: "eposta"
+                widget: "string"
+                required: false
+                hint: "Boş bırakırsan sitede hiç görünmez."
+                pattern: ['^$|^[^@ ]+@[^@ ]+[.][^@ ]+$', "Geçerli bir e-posta adresi yaz. Örnek: info@ornek.com"]
+              - label: "WhatsApp'a tıklayınca hazır gelen mesaj"
+                name: "waMesaj"
+                widget: "string"
+                hint: "Düz Türkçe yaz, kod bilmene gerek yok. Örnek: Merhaba, siteden yazıyorum."
 
       - name: "kahraman"
         label: "Açılış Bölümü"
@@ -81,6 +98,7 @@ collections:
           - label: "Güven Şeridi (rakamlar)"
             name: "serit"
             widget: "list"
+            summary: "{{fields.etiket}}: {{fields.deger}}"
             fields:
               - { label: "Rakam", name: "deger", widget: "string" }
               - { label: "Altındaki yazı", name: "etiket", widget: "string" }
@@ -100,6 +118,7 @@ collections:
               - label: "Değerler"
                 name: "degerler"
                 widget: "list"
+                summary: "{{fields.baslik}}"
                 fields:
                   - label: "Simge"
                     name: "ikon"
@@ -141,6 +160,7 @@ collections:
               - label: "Hizmet kartları"
                 name: "liste"
                 widget: "list"
+                summary: "{{fields.baslik}}"
                 fields:
                   - label: "Simge"
                     name: "ikon"
@@ -174,6 +194,7 @@ collections:
               - label: "Yorumlar"
                 name: "liste"
                 widget: "list"
+                summary: "{{fields.isim}} — {{fields.sube}}"
                 fields:
                   - { label: "Yorum metni", name: "metin", widget: "text" }
                   - { label: "Yorumu yazan", name: "isim", widget: "string" }
@@ -200,6 +221,7 @@ collections:
               - label: "Şube grupları"
                 name: "gruplar"
                 widget: "list"
+                summary: "{{fields.ad}}"
                 fields:
                   - { label: "Şube adı", name: "ad", widget: "string" }
                   - { label: "Sokak/cadde etiketi", name: "etiket", widget: "string" }
@@ -207,15 +229,12 @@ collections:
                   - label: "Fotoğraflar"
                     name: "fotograflar"
                     widget: "list"
+                    summary: "{{fields.yazi}}"
                     fields:
                       - { label: "Fotoğraf", name: "dosya", widget: "image" }
                       - { label: "Alt yazı", name: "yazi", widget: "string" }
                       - { label: "Görme engelliler için açıklama", name: "alt", widget: "string" }
                       - { label: "Dikey fotoğraf mı?", name: "dikey", widget: "boolean", default: false }
-                      - { label: "srcset (dokunma)", name: "srcset", widget: "string", required: false }
-                      - { label: "sizes (dokunma)", name: "sizes", widget: "string", required: false }
-                      - { label: "Genişlik (dokunma)", name: "en", widget: "string", required: false }
-                      - { label: "Yükseklik (dokunma)", name: "boy", widget: "string", required: false }
 
       - name: "subeler"
         label: "Şubeler"
@@ -230,17 +249,31 @@ collections:
               - label: "Şubeler"
                 name: "liste"
                 widget: "list"
+                summary: "{{fields.ad}} — {{fields.etiket}}"
                 fields:
                   - { label: "Şube adı", name: "ad", widget: "string" }
                   - { label: "Sokak/cadde etiketi", name: "etiket", widget: "string" }
                   - { label: "Adres", name: "adres", widget: "text" }
-                  - { label: "Cep telefonu (görünen)", name: "cep", widget: "string" }
-                  - { label: "Cep telefonu (arama için, +90…)", name: "cepLink", widget: "string" }
-                  - { label: "WhatsApp numarası (sadece rakam, 90 ile başlar)", name: "waLink", widget: "string" }
-                  - { label: "Sabit hat (görünen, boş bırakılabilir)", name: "sabit", widget: "string", required: false }
-                  - { label: "Sabit hat (arama için)", name: "sabitLink", widget: "string", required: false }
-                  - { label: "Harita koordinatı (enlem,boylam)", name: "koordinat", widget: "string" }
-                  - { label: "WhatsApp mesajına eklenecek not", name: "waNot", widget: "string", required: false }
+                  - label: "Cep telefonu"
+                    name: "cep"
+                    widget: "string"
+                    hint: "Arama ve WhatsApp bağlantıları bundan kendiliğinden üretilir."
+                    pattern: ['^0[0-9 ()-]{9,}$', "0 ile başlamalı. Örnek: 0541 236 88 58"]
+                  - label: "Sabit hat (boş bırakılabilir)"
+                    name: "sabit"
+                    widget: "string"
+                    required: false
+                    pattern: ['^$|^0[0-9 ()-]{9,}$', "0 ile başlamalı. Örnek: 0282 725 19 39"]
+                  - label: "Harita koordinatı"
+                    name: "koordinat"
+                    widget: "string"
+                    hint: "Google Haritalar'da şubeye sağ tıkla, en üstteki sayı çiftine tıklayınca kopyalanır. Örnek: 41.286586,27.998465"
+                    pattern: ['^-?[0-9]{1,2}[.][0-9]+, ?-?[0-9]{1,3}[.][0-9]+$', "enlem,boylam biçiminde olmalı. Örnek: 41.286586,27.998465"]
+                  - label: "WhatsApp mesajına eklenecek not"
+                    name: "waNot"
+                    widget: "string"
+                    required: false
+                    hint: "Düz Türkçe yaz. Örnek: Merkez şube hakkında"
               - { label: "Haritada gösterilecek koordinat", name: "haritaKoordinat", widget: "string" }
 
       - name: "kapanis"

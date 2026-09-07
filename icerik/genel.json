@@ -15,14 +15,9 @@
   },
   "iletisim": {
     "merkezCep": "0541 236 88 58",
-    "merkezCepLink": "+905412368858",
     "merkezSabit": "0282 725 19 39",
-    "merkezSabitLink": "+902827251939",
     "caddeCep": "0543 128 59 60",
-    "caddeCepLink": "+905431285960",
-    "waMesaj": "Merhaba%2C%20siteden%20yaz%C4%B1yorum.",
-    "merkezWa": "905412368858",
-    "caddeWa": "905431285960",
+    "waMesaj": "Merhaba, siteden yazıyorum.",
     "eposta": "atailetisim59@hotmail.com"
   }
 }

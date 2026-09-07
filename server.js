@@ -68,6 +68,145 @@ function icerikTopla() {
   return { icerik, damga };
 }
 
+/* ---------------- Panelden istenmeyen alanları türetme ---------------- */
+//
+// Panelde eskiden aynı telefon üç ayrı biçimde ("0541 236 88 58",
+// "+905412368858", "905412368858") ve fotoğraf başına dört teknik alan
+// (srcset, sizes, genişlik, yükseklik) elle isteniyordu. Hepsi zaten
+// hesaplanabilir bilgi olduğu için panelden kaldırıldı; burada üretiliyor.
+
+// "0541 236 88 58" → "905412368858"
+function telefonRakamlari(metin) {
+  const rakam = String(metin || '').replace(/\D/g, '');
+  if (!rakam) return '';
+  if (rakam.startsWith('90')) return rakam;
+  if (rakam.startsWith('0')) return '90' + rakam.slice(1);
+  if (rakam.length === 10) return '90' + rakam;
+  return rakam;
+}
+
+function aramaAdresi(metin) {
+  const rakam = telefonRakamlari(metin);
+  return rakam ? '+' + rakam : '';
+}
+
+// Panelde düz Türkçe yazılır, adrese girerken kodlanır. Zaten kodlanmış
+// eski değerler iki kez kodlanmasın diye önce çözülmeye çalışılır.
+function adresIcinKodla(metin) {
+  const ham = String(metin || '');
+  if (!ham) return '';
+  let duz = ham;
+  try {
+    if (/%[0-9A-Fa-f]{2}/.test(ham)) duz = decodeURIComponent(ham);
+  } catch {
+    /* bozuk kodlama; olduğu gibi kullan */
+  }
+  return encodeURIComponent(duz);
+}
+
+// PNG ve JPEG başlığından en/boy okur. Dış pakete gerek yok.
+function gorselOlcusu(tamYol) {
+  let b;
+  try {
+    b = fs.readFileSync(tamYol);
+  } catch {
+    return null;
+  }
+  if (b.length > 24 && b.toString('latin1', 1, 4) === 'PNG') {
+    return [b.readUInt32BE(16), b.readUInt32BE(20)];
+  }
+  if (b[0] === 0xff && b[1] === 0xd8) {
+    let i = 2;
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xff) {
+        i += 1;
+        continue;
+      }
+      const isaret = b[i + 1];
+      if (isaret >= 0xc0 && isaret <= 0xcf && isaret !== 0xc4 && isaret !== 0xc8 && isaret !== 0xcc) {
+        return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
+      }
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  }
+  return null;
+}
+
+// Aynı tabanı paylaşan boyutları (…-kucuk, …-orta, …-buyuk, tabanın kendisi)
+// diskte arar ve gerçek genişlikleriyle srcset kurar.
+function gorselBilgisi(dosya) {
+  const bos = { srcset: '', en: '', boy: '' };
+  const e = String(dosya || '').match(/^\/((?:[^/]+\/)*)([^/]+?)(\.\w+)$/);
+  if (!e) return bos;
+
+  const [, dizinUrl, ad, uzanti] = e;
+  const taban = ad.replace(/-(kucuk|orta|buyuk)$/, '');
+  const diskDizin = path.join(PUBLIC_DIR, dizinUrl);
+  const izinli = new Set([
+    taban + uzanti,
+    `${taban}-kucuk${uzanti}`,
+    `${taban}-orta${uzanti}`,
+    `${taban}-buyuk${uzanti}`,
+  ]);
+
+  let bulunanlar;
+  try {
+    bulunanlar = fs.readdirSync(diskDizin).filter((f) => izinli.has(f));
+  } catch {
+    return bos;
+  }
+
+  const kayitlar = [];
+  for (const f of bulunanlar) {
+    const olcu = gorselOlcusu(path.join(diskDizin, f));
+    if (olcu) kayitlar.push({ adres: `/${dizinUrl}${f}`, en: olcu[0] });
+  }
+  kayitlar.sort((a, b) => a.en - b.en);
+
+  const kendi = gorselOlcusu(path.join(PUBLIC_DIR, dizinUrl, ad + uzanti));
+  return {
+    srcset: kayitlar.length > 1 ? kayitlar.map((k) => `${k.adres} ${k.en}w`).join(', ') : '',
+    en: kendi ? String(kendi[0]) : '',
+    boy: kendi ? String(kendi[1]) : '',
+  };
+}
+
+// sizes yalnızca ızgara düzenine bağlı; üçlü dizilim ve dikeylik yeterli.
+const SIZES_UCLU = '(max-width: 720px) 92vw, (max-width: 1184px) 30vw, 356px';
+const SIZES_DIKEY = '(max-width: 720px) 92vw, (max-width: 1184px) 40vw, 460px';
+const SIZES_YATAY = '(max-width: 720px) 92vw, (max-width: 1184px) 54vw, 622px';
+
+function turetilmisAlanlar(icerik) {
+  const iletisim = icerik.iletisim;
+  if (iletisim) {
+    iletisim.merkezCepLink = aramaAdresi(iletisim.merkezCep);
+    iletisim.merkezSabitLink = aramaAdresi(iletisim.merkezSabit);
+    iletisim.caddeCepLink = aramaAdresi(iletisim.caddeCep);
+    iletisim.merkezWa = telefonRakamlari(iletisim.merkezCep);
+    iletisim.caddeWa = telefonRakamlari(iletisim.caddeCep);
+    iletisim.waMesaj = adresIcinKodla(iletisim.waMesaj);
+  }
+
+  for (const sube of (icerik.subelerBolumu || {}).liste || []) {
+    sube.cepLink = aramaAdresi(sube.cep);
+    sube.sabitLink = aramaAdresi(sube.sabit);
+    sube.waLink = telefonRakamlari(sube.cep);
+    sube.waNot = adresIcinKodla(sube.waNot);
+  }
+
+  for (const grup of (icerik.galeri || {}).gruplar || []) {
+    for (const foto of grup.fotograflar || []) {
+      const bilgi = gorselBilgisi(foto.dosya);
+      foto.srcset = bilgi.srcset;
+      foto.en = bilgi.en;
+      foto.boy = bilgi.boy;
+      foto.sizes = grup.uclu ? SIZES_UCLU : foto.dikey ? SIZES_DIKEY : SIZES_YATAY;
+    }
+  }
+
+  return icerik;
+}
+
 /* ---------------- Arama motorları için yapısal veri ---------------- */
 //
 // Eskiden bu blok şablonda elle yazılıydı: tek şube, sabit puan, sabit saat.
@@ -176,6 +315,7 @@ function anaSayfaUret() {
   }
 
   const sablon = fs.readFileSync(SABLON_DOSYASI, 'utf8');
+  turetilmisAlanlar(icerik);
   icerik.yapisalVeri = yapisalVeriUret(icerik);
   const html = derle(sablon)(icerik);
 
