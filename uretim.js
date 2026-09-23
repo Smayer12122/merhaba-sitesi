@@ -288,7 +288,26 @@ function anaSayfaUret() {
 
 /* ---------------- Arama motoru dosyaları ---------------- */
 
+// icerik/genel.json içindeki resmî site adresi.
+function siteAdresi() {
+  try {
+    const g = JSON.parse(fs.readFileSync(path.join(ICERIK_DIZINI, 'genel.json'), 'utf8'));
+    return String((g.genel || {}).siteAdresi || '').replace(/\/+$/, '');
+  } catch {
+    return '';
+  }
+}
+
 function robotsMetni(kok) {
+  // Site artık statik yayından sunuluyor; canlı sunucu yalnızca panel girişi
+  // için ayakta. Ama kendi onrender.com adresinden de aynı sayfayı sunuyor ve
+  // Google orayı ayrı bir site sanıp ikiz içerik olarak indeksleyebilir.
+  // Resmî adres dışındaki her konağı arama motorlarına tamamen kapatıyoruz.
+  const resmi = siteAdresi();
+  if (resmi && kok !== resmi) {
+    return 'User-agent: *\nDisallow: /\n';
+  }
+
   return `User-agent: *
 Allow: /
 Disallow: /admin/
@@ -333,6 +352,7 @@ module.exports = {
   yapisalVeriUret,
   robotsMetni,
   siteHaritasiMetni,
+  siteAdresi,
   sonDegisimZamani,
   PUBLIC_DIR,
   ICERIK_DIZINI,
